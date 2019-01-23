@@ -10,7 +10,13 @@ def pytest_collection_modifyitems(items):
         marker = test.get_marker('django_db')
         if marker:
             validate_django_db(marker)
-            return marker.transaction
+            try:
+                # pytest < 3.6
+                transaction = marker.transaction
+            except AttributeError:
+                # pytest >= 3.6
+                transaction = marker.kwargs['transaction']
+            return transaction
 
         return None
 
