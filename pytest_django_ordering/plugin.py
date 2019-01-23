@@ -7,16 +7,21 @@ from pytest_django.plugin import validate_django_db
 
 def pytest_collection_modifyitems(items):
     def get_marker_transaction(test):
-        marker = test.get_marker('django_db')
+        try:
+            # pytest < 4.0
+            marker = test.get_marker('django_db')
+        except AttributeError:
+            # pytest >=4.0
+            marker = test.get_closest_marker('django_db')
+
         if marker:
             validate_django_db(marker)
             try:
                 # pytest < 3.6
-                transaction = marker.transaction
+                return marker.transaction
             except AttributeError:
                 # pytest >= 3.6
-                transaction = marker.kwargs['transaction']
-            return transaction
+                return  marker.kwargs['transaction']
 
         return None
 
