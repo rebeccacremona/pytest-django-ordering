@@ -41,3 +41,7 @@ This plugin supports Python 2.7, 3.5, and 3.6. Install with ``pip``::
     $ pip install pytest-django-ordering
 
 You're done! ``pytest`` will automatically find and integrate the plugin.
+
+Contributing
+------------
+No changes: does Travis pass with the repo as-is?
